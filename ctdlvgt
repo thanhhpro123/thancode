@@ -1,0 +1,88 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+// Hàm kiểm tra số nguyên tố
+bool isPrime(int n) {
+    if (n < 2) return false;
+    for (int i = 2; i <= sqrt(n); i++) {
+        if (n % i == 0) return false;
+    }
+    return true;
+}
+
+// Hàm sắp xếp mảng theo thứ tự tăng dần
+void sortArray(int arr[], int size) {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = i + 1; j < size; j++) {
+            if (arr[i] > arr[j]) {
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+    }
+}
+
+// Hàm kiểm tra cấp số nhân
+bool isGeometricProgression(int a, int b, int c) {
+    if (a == 0 || b == 0 || c == 0) return false;
+    return (b * b == a * c);
+}
+
+int main() {
+    // Khởi tạo danh sách
+    int list[100];
+    int size = 0;
+    cout << "Nhap cac phan tu cua danh sach, nhap # de dung: ";
+    while (cin >> list[size]) {
+        size++;
+    }
+
+    // Kiểm tra số nguyên tố ở vị trí thứ 5
+    if (size >= 5 && isPrime(list[4])) {
+        list[4] = 10; // Thay thế bằng số 10
+    }
+
+    // Tính trung bình nhân các số chẵn, dương, chia hết cho 5
+    double product = 1;
+    int count = 0;
+    for (int num : list) {
+        if (num != 0 && num % 2 == 0 && num > 0 && num % 5 == 0) {
+            product *= num;
+            count++;
+        }
+    }
+    double average = pow(product, 1.0 / count);
+
+    // Sắp xếp danh sách theo thứ tự tăng dần
+    sortArray(list, size);
+
+    // Kiểm tra cấp số nhân
+    bool found = false;
+    int a, b, c;
+    for (int i = 0; i < size - 2; i++) {
+        if (isGeometricProgression(list[i], list[i+1], list[i+2])) {
+            found = true;
+            a = list[i];
+            b = list[i+1];
+            c = list[i+2];
+            break;
+        }
+    }
+
+    // In kết quả
+    cout << "Trung binh nhan cac so chan, duong, chia het cho 5 la: " << average << endl;
+    cout << "Danh sach sau khi sap xep la: ";
+    for (int num : list) {
+        cout << num << " ";
+    }
+    cout << endl;
+    if (found) {
+        cout << "Co 3 phan tu lien tiep la cap so nhan: " << a << " " << b << " " << c << endl;
+    }
+    else {
+        cout << "Khong co 3 phan tu lien tiep la cap so nhan" << endl;
+    }
+    return 0;
+}
